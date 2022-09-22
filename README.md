@@ -1,7 +1,8 @@
 # blog-api
 A basic API with operations to create, update and delete blog posts.
 
-Requires Python 3.7+.
+Requires Python 3.7+. 
+Database connection URL is hardcoded. If postgres is not configured similarly, please change the connection URL as well in `app/database.py`.
 
 To run:
 1. Open the Terminal.
