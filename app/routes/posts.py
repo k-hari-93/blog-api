@@ -1,6 +1,7 @@
-from typing import List
+from typing import List, Optional
 from fastapi import Response, status, HTTPException, Depends, APIRouter
 from sqlalchemy.orm import Session
+from sqlalchemy import or_
 
 from .. import models, schemas, database, oauth2
 
@@ -10,8 +11,12 @@ router = APIRouter(
 )
 
 @router.get("/", response_model=List[schemas.Post])
-def get_posts(db: Session = Depends(database.get_db)):
-    posts = db.query(models.Post).all()
+def get_posts(db: Session = Depends(database.get_db), skip: int = 0, limit: int = 10,
+              search: Optional[str] = ""):
+    posts = db.query(models.Post).filter(or_(
+        models.Post.title.ilike(f"%{search}%"),
+        models.Post.content.ilike(f"%{search}%"))
+        ).offset(skip).limit(limit).all()
     
     return posts
 
