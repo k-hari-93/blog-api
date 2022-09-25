@@ -1,6 +1,6 @@
 from datetime import datetime
 from typing import Optional
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, conint
 
 class PostBase(BaseModel):
     title: str
@@ -37,3 +37,6 @@ class Post(PostBase):
     class Config:
         orm_mode = True
         
+class Vote(BaseModel):
+    post_id: int
+    dir: conint(ge=0, lt=2)
